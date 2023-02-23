@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/22 18:25:45 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/02/23 10:00:19 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,7 @@ int	check(char **argv)
 			if ((argv[a][i] >= 64 && argv[a][i] <= 127) ||
 				(argv[a][i] >= 33 && argv[a][i] <= 42) ||
 				(argv[a][i] >= '.' && argv[a][i] <= '/') ||
-				(argv[a][i] == ',') ||
-				(argv[a][i] == '-' && ((argv[a][i + 1] > '9' || argv[a][i
-				+ 1] < '0') || (argv[a][i - 1] != '\0'
-				&& argv[a][i - 1] != ' ')))
-				|| (argv[a][i] == '+' && ((argv[a][i + 1] > '9' || argv[a][i
+				(argv[a][i] == ',') || (argv[a][i] == '+' && ((argv[a][i + 1] > '9' || argv[a][i
 				+ 1] < '0') || (argv[a][i - 1] != '\0'
 				&& argv[a][i - 1] != ' '))))
 				return(1);
@@ -69,11 +65,12 @@ int	check_nothing(char **argv)
 void *start(void *l)
 {
 	t_data *a=l;
+	int y=0;  
 	pthread_mutex_lock(&a->l);
-	printf("ha howa dkhal ll mara  %d\n",a->i);
-	sleep(4);
-	pthread_mutex_unlock(&a->l);
+	printf("ha howa dkhal ll mara  %d\n",y);
+	usleep(a->a2);
 	printf("ha howa khrej ll mara  \n");
+	pthread_mutex_unlock(&a->l);
 	return(0);
 }
 int create_threads(t_data *a)
@@ -81,14 +78,14 @@ int create_threads(t_data *a)
 	a->i = 0;
 	while (a->i < a->a1)
 	{
-		if (pthread_create(a->p+a->i, NULL,start,a))
+		if (pthread_create(&a->p[a->i], NULL,start,a))
 			return(1);
 		a->i++;
 	}
 	a->i =0;
 	while (a->i < a->a1)
 	{
-		if (pthread_join(*(a->p+a->i), NULL))
+		if (pthread_join(a->p[a->i], NULL))
 			return(1);
 		a->i++;
 	}
