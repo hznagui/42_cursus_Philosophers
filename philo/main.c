@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/23 10:00:19 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/02/25 18:49:37 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check(char **argv)
 		i = 0;
 		while (argv[a][i])
 		{
-			if ((argv[a][i] >= 64 && argv[a][i] <= 127) ||
+			if ((argv[a][i] >= 58 && argv[a][i] <= 127) ||
 				(argv[a][i] >= 33 && argv[a][i] <= 42) ||
 				(argv[a][i] >= '.' && argv[a][i] <= '/') ||
 				(argv[a][i] == ',') || (argv[a][i] == '+' && ((argv[a][i + 1] > '9' || argv[a][i
