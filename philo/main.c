@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/27 16:15:37 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/02/27 17:54:33 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ void *start(void *l)
 	// 	printf("sleep  %d\n",p->index);
 	// 	usleep(p->a4);
 	// }
+	
+	// printf("%d\n",p->index % 2);
+	// sleep(2);
+		if (p->index % 2 == 0)
+			usleep(100);
 	while (1)
 	{
     	printf("%d is thinking\n", p->index);
@@ -118,11 +123,11 @@ void *start(void *l)
     	pthread_mutex_lock(&p->next->fork);
     	printf("%d has taken the fork %d\n", p->index, p->next->index);
     	printf("%d is eating\n", p->index);
-    	usleep(p->a3);
+    	usleep(p->a3*1000);
     	pthread_mutex_unlock(&p->fork);
     	pthread_mutex_unlock(&p->next->fork);
     	printf("%d is sleeping\n", p->index);
-    	usleep(p->a4);
+    	usleep(p->a4*1000);
 	}
 	return(0);
 }
@@ -133,6 +138,7 @@ int create_threads(t_data *a)
 	{
 		if (pthread_create(&a->p->phl, NULL,start,a->p))
 			return(1);
+		// usleep(1000);
 		a->i++;
 		a->p = a->p->next;
 	}
