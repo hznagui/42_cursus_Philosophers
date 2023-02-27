@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/27 11:59:30 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/02/27 16:15:37 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int  create_struct(t_data *a)
 	a->i=1;
 	while (a->i <= a->a1)
 	{
-		k = ft_lstnew(a->i);
+		k = ft_lstnew(a->i,a);
 		ft_lstadd_back(&a->p,k);
 		a->i++;
 	}
@@ -90,17 +90,40 @@ int  create_struct(t_data *a)
 void *start(void *l)
 {
 	t_philo *p = l;
-	printf("%d is thinking\n",p->index);
-	pthread_mutex_lock(&p->next->fork);
-	printf("%d is taking the fork of %d\n",p->index,p->next->index);
-	pthread_mutex_lock(&p->fork);
-	printf("%d is eating\n",p->index);
-		sleep(1);
-		
-	// usleep(a->a2);
-	pthread_mutex_unlock(&p->fork);
-	pthread_mutex_lock(&p->next->fork);
-	printf("ha howa khrej ll mara  %d\n",p->index);
+	int a;
+
+	a = 0;
+	// while(1){
+	// 	if (p->index % 2)
+	// 		usleep(100);
+	// 	printf("%d is thinking\n",p->index);
+	// 	while (a == 1);
+	// 	pthread_mutex_lock(&p->fork);
+	// 	printf("%d is taking the fork of %d\n",p->index,p->next->index);
+	// 	pthread_mutex_lock(&p->next->fork);
+	// 	printf("%d is eating\n",p->index);
+	// 	a = 1;
+	// 	usleep(p->a3);
+	// 	pthread_mutex_unlock(&p->next->fork);
+	// 	pthread_mutex_unlock(&p->fork);
+	// 	a = 0;
+	// 	printf("sleep  %d\n",p->index);
+	// 	usleep(p->a4);
+	// }
+	while (1)
+	{
+    	printf("%d is thinking\n", p->index);
+    	pthread_mutex_lock(&p->fork);
+    	printf("%d has taken the fork %d\n", p->index, p->index);
+    	pthread_mutex_lock(&p->next->fork);
+    	printf("%d has taken the fork %d\n", p->index, p->next->index);
+    	printf("%d is eating\n", p->index);
+    	usleep(p->a3);
+    	pthread_mutex_unlock(&p->fork);
+    	pthread_mutex_unlock(&p->next->fork);
+    	printf("%d is sleeping\n", p->index);
+    	usleep(p->a4);
+	}
 	return(0);
 }
 int create_threads(t_data *a)
@@ -116,7 +139,7 @@ int create_threads(t_data *a)
 	a->i = 0;
 	while (a->i < a->a1)
 	{
-		if (pthread_join(a->p->phl, NULL))
+		if (pthread_join(a->p->phl,NULL))
 			return(1);
 		a->i++;
 	}
@@ -128,6 +151,7 @@ int values(char **argv, t_data *a,int argc)
 	a->a2 = ft_atoi(argv[2]);
 	a->a3 = ft_atoi(argv[3]);
 	a->a4 = ft_atoi(argv[4]);
+	a->arg = argc;
 	if (argc == 6)
 	{
 		a->a5 = ft_atoi(argv[5]);
@@ -159,6 +183,7 @@ int	main(int argc, char **argv)
 		if (check_nothing(argv) || check(argv) || values(argv,&a,argc))
 			return(1);
 		create_threads(&a);
+		// while (1);
 		return(0);
 		// while (a.p)
 		// {
