@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/27 17:54:33 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/02/27 21:08:16 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,44 +90,28 @@ int  create_struct(t_data *a)
 void *start(void *l)
 {
 	t_philo *p = l;
-	int a;
+	struct timeval time;
+	struct timeval time1;
 
-	a = 0;
-	// while(1){
-	// 	if (p->index % 2)
-	// 		usleep(100);
-	// 	printf("%d is thinking\n",p->index);
-	// 	while (a == 1);
-	// 	pthread_mutex_lock(&p->fork);
-	// 	printf("%d is taking the fork of %d\n",p->index,p->next->index);
-	// 	pthread_mutex_lock(&p->next->fork);
-	// 	printf("%d is eating\n",p->index);
-	// 	a = 1;
-	// 	usleep(p->a3);
-	// 	pthread_mutex_unlock(&p->next->fork);
-	// 	pthread_mutex_unlock(&p->fork);
-	// 	a = 0;
-	// 	printf("sleep  %d\n",p->index);
-	// 	usleep(p->a4);
-	// }
-	
-	// printf("%d\n",p->index % 2);
-	// sleep(2);
-		if (p->index % 2 == 0)
+	gettimeofday(&time,NULL);
+	if (!(p->index % 2))
 			usleep(100);
 	while (1)
 	{
-    	printf("%d is thinking\n", p->index);
     	pthread_mutex_lock(&p->fork);
-    	printf("%d has taken the fork %d\n", p->index, p->index);
+		gettimeofday(&time1,NULL);
+    	printf("%ld ms %d has taken a fork\n", (time1.tv_sec - time.tv_sec) * 1000 + (time1.tv_usec - time.tv_usec) / 1000 ,p->index);
     	pthread_mutex_lock(&p->next->fork);
-    	printf("%d has taken the fork %d\n", p->index, p->next->index);
-    	printf("%d is eating\n", p->index);
+		gettimeofday(&time1,NULL);
+    	printf("%ld ms %d is eating\n",(time1.tv_sec - time.tv_sec) * 1000 + (time1.tv_usec - time.tv_usec)/1000, p->index);
     	usleep(p->a3*1000);
     	pthread_mutex_unlock(&p->fork);
     	pthread_mutex_unlock(&p->next->fork);
-    	printf("%d is sleeping\n", p->index);
+		gettimeofday(&time1,NULL);
+    	printf("%ld ms %d is sleeping\n",(time1.tv_sec - time.tv_sec) * 1000 + (time1.tv_usec - time.tv_usec)/1000, p->index);
     	usleep(p->a4*1000);
+		gettimeofday(&time1,NULL);
+    	printf("%ld ms %d is thinking\n",(time1.tv_sec - time.tv_sec) * 1000 + (time1.tv_usec - time.tv_usec)/1000, p->index);
 	}
 	return(0);
 }
