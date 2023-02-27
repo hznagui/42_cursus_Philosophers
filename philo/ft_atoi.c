@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 14:49:21 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/21 14:59:15 by hznagui          ###   ########.fr       */
+/*   Created: 2023/02/26 11:03:59 by hznagui           #+#    #+#             */
+/*   Updated: 2023/02/26 11:06:34 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ static int	ft_return(int c)
 
 int	ft_atoi(const char *str)
 {
-	int		c;
-	size_t	z;
-	int		i;
+	int c;
+	size_t z;
+	int i;
 
 	i = 0;
 	z = 0;
 	c = 1;
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\r'
-		|| str[i] == '\f' || str[i] == '\n' || str[i] == '\v' )
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\r' || str[i] == '\f'
+		|| str[i] == '\n' || str[i] == '\v')
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{

@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/25 18:49:37 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/02/26 11:19:10 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,30 @@ int	check_nothing(char **argv)
 	int	a;
 	int	i;
 	int	z;
+	int	k;
 
 	a = 1;
 	while (argv[a])
 	{
+		k = 0;
 		z = 0;
 		i = 0;
 		while (argv[a][i])
 		{
-			if (argv[a][i] >= '0' && argv[a][i] <= '9')
+			if ((argv[a][i] >= '0' && argv[a][i] <= '9' ) && z == 0)
+			{
 				z = 1;
+				k += 1;	
+			}
+			else if (!(argv[a][i] >= '0' && argv[a][i] <= '9' ) && z == 1)
+			{
+				z = 0;
+				// k += 1;	
+			}
 			i++;
+			// printf("%d\n",k);
 		}
-		if (z == 0)
+		if (k != 1)
 		{
 			write(2,"check the arguments \n",22);
 			return(1);
@@ -65,9 +76,9 @@ int	check_nothing(char **argv)
 void *start(void *l)
 {
 	t_data *a=l;
-	int y=0;  
+	static int y;  
 	pthread_mutex_lock(&a->l);
-	printf("ha howa dkhal ll mara  %d\n",y);
+	printf("ha howa dkhal ll mara  %d\n",y++);
 	usleep(a->a2);
 	printf("ha howa khrej ll mara  \n");
 	pthread_mutex_unlock(&a->l);
