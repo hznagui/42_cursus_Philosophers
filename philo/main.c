@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/26 11:19:10 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/02/27 11:59:30 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,34 @@ int	check_nothing(char **argv)
 	}
 	return(0);
 }
+int  create_struct(t_data *a)
+{
+	t_philo *k;
+	
+	a->i=1;
+	while (a->i <= a->a1)
+	{
+		k = ft_lstnew(a->i);
+		ft_lstadd_back(&a->p,k);
+		a->i++;
+	}
+	sercular_lst(&a->p);
+	return(0);
+}
 void *start(void *l)
 {
-	t_data *a=l;
-	static int y;  
-	pthread_mutex_lock(&a->l);
-	printf("ha howa dkhal ll mara  %d\n",y++);
-	usleep(a->a2);
-	printf("ha howa khrej ll mara  \n");
-	pthread_mutex_unlock(&a->l);
+	t_philo *p = l;
+	printf("%d is thinking\n",p->index);
+	pthread_mutex_lock(&p->next->fork);
+	printf("%d is taking the fork of %d\n",p->index,p->next->index);
+	pthread_mutex_lock(&p->fork);
+	printf("%d is eating\n",p->index);
+		sleep(1);
+		
+	// usleep(a->a2);
+	pthread_mutex_unlock(&p->fork);
+	pthread_mutex_lock(&p->next->fork);
+	printf("ha howa khrej ll mara  %d\n",p->index);
 	return(0);
 }
 int create_threads(t_data *a)
@@ -89,20 +108,20 @@ int create_threads(t_data *a)
 	a->i = 0;
 	while (a->i < a->a1)
 	{
-		if (pthread_create(&a->p[a->i], NULL,start,a))
+		if (pthread_create(&a->p->phl, NULL,start,a->p))
 			return(1);
 		a->i++;
+		a->p = a->p->next;
 	}
-	a->i =0;
+	a->i = 0;
 	while (a->i < a->a1)
 	{
-		if (pthread_join(a->p[a->i], NULL))
+		if (pthread_join(a->p->phl, NULL))
 			return(1);
 		a->i++;
 	}
 	return(0);
 }
-
 int values(char **argv, t_data *a,int argc)
 {
 	a->a1 = ft_atoi(argv[1]);
@@ -123,10 +142,12 @@ int values(char **argv, t_data *a,int argc)
 				write(2,"some number are not logical \n",30);
 			return(1);
 			}
-	a->p = malloc(sizeof(pthread_t)* a->a1);
-	pthread_mutex_init(&a->l,NULL);
-	if (!(a->p))
-		return(1);
+	
+	create_struct(a);
+	// a->p = malloc(sizeof(pthread_t)* a->a1);
+	// pthread_mutex_init(&a->l,NULL);
+	// if (!(a->p))
+	// 	return(1);
 	return (0);
 }
 int	main(int argc, char **argv)
@@ -137,9 +158,14 @@ int	main(int argc, char **argv)
 		
 		if (check_nothing(argv) || check(argv) || values(argv,&a,argc))
 			return(1);
-		
 		create_threads(&a);
-		pthread_mutex_destroy(&a.l);
+		return(0);
+		// while (a.p)
+		// {
+		// 	printf("%d\n",a.p->index);
+		// 	a.p = a.p->next;
+		// }
+		// pthread_mutex_destroy(&a.l);
 	}
 	else
 		return(1);

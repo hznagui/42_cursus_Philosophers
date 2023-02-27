@@ -6,7 +6,7 @@
 #    By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/21 14:51:10 by hznagui           #+#    #+#              #
-#    Updated: 2023/02/22 14:03:13 by hznagui          ###   ########.fr        #
+#    Updated: 2023/02/27 11:03:47 by hznagui          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ FLAGS = -Wall -Wextra -Werror
 
 SRC_FILE = 	ft_atoi.c \
 			main.c \
+			lst.c \
 			
 
 OBJ_FILE = $(SRC_FILE:.c=.o)
