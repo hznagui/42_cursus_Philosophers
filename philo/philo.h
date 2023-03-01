@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:49:54 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/27 18:59:25 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/01 09:49:19 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ typedef struct philo
     pthread_t phl;
     pthread_mutex_t fork;
     int index;
-    struct philo *next;
     int a2;
     int a3;
     int a4;
     int a5;
     int arg;
+	struct timeval *time;
+    struct philo *next;
+    
 }t_philo;
 
 typedef struct data{
@@ -41,6 +43,7 @@ int a4;
 int a5;
 int arg;
 int i;
+struct timeval time;
 t_philo *p;
 
 } t_data;

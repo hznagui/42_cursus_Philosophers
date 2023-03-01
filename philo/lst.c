@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:41:11 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/27 14:40:41 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/01 10:26:04 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ t_philo	*ft_lstnew(int index,t_data *a)
 	p->a3 = a->a3;
 	p->a4 = a->a4;
 	p->arg = a->arg;
+	p->time = &a->time;
+	
 	if (p->arg == 6)
 		p->a5 = a->a5;
 	p -> next = NULL;

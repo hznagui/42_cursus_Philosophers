@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/02/27 21:08:16 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/01 12:57:34 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,28 +90,34 @@ int  create_struct(t_data *a)
 void *start(void *l)
 {
 	t_philo *p = l;
-	struct timeval time;
 	struct timeval time1;
-
-	gettimeofday(&time,NULL);
+	int i;
+	i = 1;
+	// struct timeval time;
+	// 	gettimeofday(&time,NULL);
+	
+	// printf("%ld\n",p->time->tv_sec);
+	// printf("%d\n",p->time->tv_usec);
+	// printf("%ld\n",time.tv_sec);
+	// printf("%ld\n",time1.tv_sec);
 	if (!(p->index % 2))
 			usleep(100);
-	while (1)
+	while (i)
 	{
     	pthread_mutex_lock(&p->fork);
 		gettimeofday(&time1,NULL);
-    	printf("%ld ms %d has taken a fork\n", (time1.tv_sec - time.tv_sec) * 1000 + (time1.tv_usec - time.tv_usec) / 1000 ,p->index);
-    	pthread_mutex_lock(&p->next->fork);
+    	printf("%ld ms %d has taken a fork\n", (time1.tv_sec - p->time->tv_sec) * 1000 + (time1.tv_usec - p->time->tv_usec) / 1000 ,p->index);
+		pthread_mutex_lock(&p->next->fork);
 		gettimeofday(&time1,NULL);
-    	printf("%ld ms %d is eating\n",(time1.tv_sec - time.tv_sec) * 1000 + (time1.tv_usec - time.tv_usec)/1000, p->index);
+    	printf("%ld ms %d is eating\n",(time1.tv_sec - p->time->tv_sec) * 1000 + (time1.tv_usec - p->time->tv_usec)/1000, p->index);
     	usleep(p->a3*1000);
     	pthread_mutex_unlock(&p->fork);
     	pthread_mutex_unlock(&p->next->fork);
 		gettimeofday(&time1,NULL);
-    	printf("%ld ms %d is sleeping\n",(time1.tv_sec - time.tv_sec) * 1000 + (time1.tv_usec - time.tv_usec)/1000, p->index);
+    	printf("%ld ms %d is sleeping\n",(time1.tv_sec - p->time->tv_sec) * 1000 + (time1.tv_usec - p->time->tv_usec)/1000, p->index);
     	usleep(p->a4*1000);
 		gettimeofday(&time1,NULL);
-    	printf("%ld ms %d is thinking\n",(time1.tv_sec - time.tv_sec) * 1000 + (time1.tv_usec - time.tv_usec)/1000, p->index);
+    	printf("%ld ms %d is thinking\n",(time1.tv_sec - p->time->tv_sec) * 1000 + (time1.tv_usec - p->time->tv_usec)/1000, p->index);
 	}
 	return(0);
 }
@@ -126,6 +132,9 @@ int create_threads(t_data *a)
 		a->i++;
 		a->p = a->p->next;
 	}
+		// if (pthread_create(&a->p->phl, NULL,start,a->p))
+		// 	return(1);
+	// while (1);
 	a->i = 0;
 	while (a->i < a->a1)
 	{
@@ -158,6 +167,7 @@ int values(char **argv, t_data *a,int argc)
 			}
 	
 	create_struct(a);
+	gettimeofday(&(a->time),NULL);;
 	// a->p = malloc(sizeof(pthread_t)* a->a1);
 	// pthread_mutex_init(&a->l,NULL);
 	// if (!(a->p))
