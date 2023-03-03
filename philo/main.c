@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/03 15:48:09 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/03 17:54:42 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,22 @@ void *routine(void *l)
 		a->p = a->p->next;
 	}
 }
-
+void ft_pause(int index,struct timeval *time1,t_philo *p)
+{
+	long long k;
+	if (index == 1)
+	{
+		k = ft_gestion(0,time1,p)+p->a3;
+		while (ft_gestion(0,time1,p) < k)
+			usleep(100);
+	}
+	else if (index == 2)
+	{
+		k = ft_gestion(0,time1,p)+p->a4;
+		while (ft_gestion(0,time1,p) < k)
+			usleep(100);
+	}
+}
 void *start(void *l)
 {
 	t_philo *p = l;
@@ -134,14 +149,13 @@ void *start(void *l)
 		ft_gestion(1,&time1,p);
 		pthread_mutex_lock(&p->next->fork);
 		ft_gestion(2,&time1,p);
-    	usleep((p->a3*1000));
+		ft_pause(1,&time1,p);
 		p->last += ft_gestion(0,&time1,p);
     	pthread_mutex_unlock(&p->fork);
     	pthread_mutex_unlock(&p->next->fork);
 		ft_gestion(3,&time1,p);
-    	usleep((p->a4*1000));
+		ft_pause(2,&time1,p);
 		ft_gestion(4,&time1,p);
-
 	}
 	return(0);
 }
