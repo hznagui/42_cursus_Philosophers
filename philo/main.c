@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/03 17:54:42 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/03 19:47:55 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,8 @@ int	check_nothing(char **argv)
 			else if (!(argv[a][i] >= '0' && argv[a][i] <= '9' ) && z == 1)
 			{
 				z = 0;
-				// k += 1;	
 			}
 			i++;
-			// printf("%d\n",k);
 		}
 		if (k != 1)
 		{
@@ -87,42 +85,54 @@ int  create_struct(t_data *a)
 	sercular_lst(&a->p);
 	return(0);
 }
-long long ft_gestion(int a,struct timeval *time1,t_philo *p)
+long ft_gestion(int a,struct timeval *time1,t_philo *p)
 {
-	long long o;
+	long o;
 
 	gettimeofday(time1,NULL);
 	o = (time1->tv_sec - p->time->tv_sec) * 1000 + (time1->tv_usec - p->time->tv_usec) / 1000;
-	if (a == 1)
-    	printf("%lld ms %d has taken a fork\n", o ,p->index);
-	else if (a == 2)
-    	printf("%lld ms %d is eating\n", o, p->index);
-	else if (a == 3)
-    	printf("%lld ms %d is sleeping\n",o, p->index);
-	else if (a == 4)
-    	printf("%lld ms %d is thinking\n",o, p->index);
-	else if (a == 5)
-    	printf("%lld ms %d is dead\n",o, p->index);
+	if (a == 1 && p->i == 1)
+    	printf("%ld ms %d has taken a fork\n", o ,p->index);
+	else if (a == 2 && p->i == 1)
+    	printf("%ld ms %d is eating\n", o, p->index);
+	else if (a == 3 && p->i == 1)
+    	printf("%ld ms %d is sleeping\n",o, p->index);
+	else if (a == 4 && p->i == 1)
+    	printf("%ld ms %d is thinking\n",o, p->index);
+	else if (a == 5 && p->i == 0)
+    	printf("%ld ms %d is dead\n",o, p->index);
 	return (o);
 }
 
-void *routine(void *l)
+void *death(void *l)
 {
 	struct timeval time1;
 	t_data *a = l;
+	int i;
+	i = 0; 
 	while (1)
 	{
 		if (a->p->last < ft_gestion(0,&time1,a->p))
 		{
+			while (i < a->a1)
+			{
+				a->p->i = 0;
+				i++;
+				a->p = a->p->next;
+			}
 			ft_gestion(5,&time1,a->p);
 			return(0);
 		}
+		// else if (a->p->k == a->a5)
+		// {
+		// 	pthread_detach(a->p->phl);
+		// }
 		a->p = a->p->next;
 	}
 }
 void ft_pause(int index,struct timeval *time1,t_philo *p)
 {
-	long long k;
+	long k;
 	if (index == 1)
 	{
 		k = ft_gestion(0,time1,p)+p->a3;
@@ -142,15 +152,17 @@ void *start(void *l)
 	struct timeval time1;
 
 	if (!(p->index % 2))
-			usleep(200);
+			usleep(500);
 	while (1)
 	{
     	pthread_mutex_lock(&p->fork);
 		ft_gestion(1,&time1,p);
 		pthread_mutex_lock(&p->next->fork);
+		ft_gestion(1,&time1,p);
 		ft_gestion(2,&time1,p);
 		ft_pause(1,&time1,p);
 		p->last += ft_gestion(0,&time1,p);
+		p->k += 1;
     	pthread_mutex_unlock(&p->fork);
     	pthread_mutex_unlock(&p->next->fork);
 		ft_gestion(3,&time1,p);
@@ -169,7 +181,7 @@ int create_threads(t_data *a)
 		a->i++;
 		a->p = a->p->next;
 	}
-	if (pthread_create(&a->death, NULL,routine,a))
+	if (pthread_create(&a->death, NULL,death,a))
 			return(1);
 	if (pthread_join(a->death,NULL))
 			return(1);
