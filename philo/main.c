@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/01 12:57:34 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/03 15:48:09 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,37 +87,61 @@ int  create_struct(t_data *a)
 	sercular_lst(&a->p);
 	return(0);
 }
+long long ft_gestion(int a,struct timeval *time1,t_philo *p)
+{
+	long long o;
+
+	gettimeofday(time1,NULL);
+	o = (time1->tv_sec - p->time->tv_sec) * 1000 + (time1->tv_usec - p->time->tv_usec) / 1000;
+	if (a == 1)
+    	printf("%lld ms %d has taken a fork\n", o ,p->index);
+	else if (a == 2)
+    	printf("%lld ms %d is eating\n", o, p->index);
+	else if (a == 3)
+    	printf("%lld ms %d is sleeping\n",o, p->index);
+	else if (a == 4)
+    	printf("%lld ms %d is thinking\n",o, p->index);
+	else if (a == 5)
+    	printf("%lld ms %d is dead\n",o, p->index);
+	return (o);
+}
+
+void *routine(void *l)
+{
+	struct timeval time1;
+	t_data *a = l;
+	while (1)
+	{
+		if (a->p->last < ft_gestion(0,&time1,a->p))
+		{
+			ft_gestion(5,&time1,a->p);
+			return(0);
+		}
+		a->p = a->p->next;
+	}
+}
+
 void *start(void *l)
 {
 	t_philo *p = l;
 	struct timeval time1;
-	int i;
-	i = 1;
-	// struct timeval time;
-	// 	gettimeofday(&time,NULL);
-	
-	// printf("%ld\n",p->time->tv_sec);
-	// printf("%d\n",p->time->tv_usec);
-	// printf("%ld\n",time.tv_sec);
-	// printf("%ld\n",time1.tv_sec);
+
 	if (!(p->index % 2))
-			usleep(100);
-	while (i)
+			usleep(200);
+	while (1)
 	{
     	pthread_mutex_lock(&p->fork);
-		gettimeofday(&time1,NULL);
-    	printf("%ld ms %d has taken a fork\n", (time1.tv_sec - p->time->tv_sec) * 1000 + (time1.tv_usec - p->time->tv_usec) / 1000 ,p->index);
+		ft_gestion(1,&time1,p);
 		pthread_mutex_lock(&p->next->fork);
-		gettimeofday(&time1,NULL);
-    	printf("%ld ms %d is eating\n",(time1.tv_sec - p->time->tv_sec) * 1000 + (time1.tv_usec - p->time->tv_usec)/1000, p->index);
-    	usleep(p->a3*1000);
+		ft_gestion(2,&time1,p);
+    	usleep((p->a3*1000));
+		p->last += ft_gestion(0,&time1,p);
     	pthread_mutex_unlock(&p->fork);
     	pthread_mutex_unlock(&p->next->fork);
-		gettimeofday(&time1,NULL);
-    	printf("%ld ms %d is sleeping\n",(time1.tv_sec - p->time->tv_sec) * 1000 + (time1.tv_usec - p->time->tv_usec)/1000, p->index);
-    	usleep(p->a4*1000);
-		gettimeofday(&time1,NULL);
-    	printf("%ld ms %d is thinking\n",(time1.tv_sec - p->time->tv_sec) * 1000 + (time1.tv_usec - p->time->tv_usec)/1000, p->index);
+		ft_gestion(3,&time1,p);
+    	usleep((p->a4*1000));
+		ft_gestion(4,&time1,p);
+
 	}
 	return(0);
 }
@@ -128,20 +152,13 @@ int create_threads(t_data *a)
 	{
 		if (pthread_create(&a->p->phl, NULL,start,a->p))
 			return(1);
-		// usleep(1000);
 		a->i++;
 		a->p = a->p->next;
 	}
-		// if (pthread_create(&a->p->phl, NULL,start,a->p))
-		// 	return(1);
-	// while (1);
-	a->i = 0;
-	while (a->i < a->a1)
-	{
-		if (pthread_join(a->p->phl,NULL))
+	if (pthread_create(&a->death, NULL,routine,a))
 			return(1);
-		a->i++;
-	}
+	if (pthread_join(a->death,NULL))
+			return(1);
 	return(0);
 }
 int values(char **argv, t_data *a,int argc)
@@ -168,10 +185,6 @@ int values(char **argv, t_data *a,int argc)
 	
 	create_struct(a);
 	gettimeofday(&(a->time),NULL);;
-	// a->p = malloc(sizeof(pthread_t)* a->a1);
-	// pthread_mutex_init(&a->l,NULL);
-	// if (!(a->p))
-	// 	return(1);
 	return (0);
 }
 int	main(int argc, char **argv)
@@ -183,14 +196,7 @@ int	main(int argc, char **argv)
 		if (check_nothing(argv) || check(argv) || values(argv,&a,argc))
 			return(1);
 		create_threads(&a);
-		// while (1);
 		return(0);
-		// while (a.p)
-		// {
-		// 	printf("%d\n",a.p->index);
-		// 	a.p = a.p->next;
-		// }
-		// pthread_mutex_destroy(&a.l);
 	}
 	else
 		return(1);
