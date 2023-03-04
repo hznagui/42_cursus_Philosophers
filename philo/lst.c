@@ -6,21 +6,21 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:41:11 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/04 11:01:38 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/04 15:47:22 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	*ft_lstnew(int index,t_data *a)
+t_philo	*ft_lstnew(int index, t_data *a)
 {
 	t_philo	*p;
 
-	p = malloc (sizeof(t_philo));
+	p = malloc(sizeof(t_philo));
 	if (!p)
 		return (0);
-    p->a2 = a->a2;
-    p->a1 = a->a1;
+	p->a2 = a->a2;
+	p->a1 = a->a1;
 	p->a3 = a->a3;
 	p->a4 = a->a4;
 	p->arg = a->arg;
@@ -28,15 +28,14 @@ t_philo	*ft_lstnew(int index,t_data *a)
 	p->last = a->a2;
 	p->i = 1;
 	p->k = 0;
-	
-	
 	if (p->arg == 6)
 		p->a5 = a->a5;
-	p -> next = NULL;
-	pthread_mutex_init(&p->fork,NULL) ;
-	p -> index = index;
+	p->next = NULL;
+	pthread_mutex_init(&p->fork, NULL);
+	p->index = index;
 	return (p);
 }
+
 void	ft_lstadd_back(t_philo **lst, t_philo *new)
 {
 	t_philo	*p;
@@ -48,18 +47,35 @@ void	ft_lstadd_back(t_philo **lst, t_philo *new)
 	else
 	{
 		p = *lst;
-		while (p -> next)
+		while (p->next)
 		{
-			p = p -> next;
+			p = p->next;
 		}
-		p -> next = new ;
+		p->next = new;
 	}
 }
-void sercular_lst(t_philo **lst)
+
+void	sercular_lst(t_philo **lst)
 {
-	t_philo *p;
+	t_philo	*p;
+
 	p = *lst;
 	while (p->next)
-		p=p->next;
+		p = p->next;
 	p->next = *lst;
+}
+
+int	create_struct(t_data *a)
+{
+	t_philo	*k;
+
+	a->i = 1;
+	while (a->i <= a->a1)
+	{
+		k = ft_lstnew(a->i, a);
+		ft_lstadd_back(&a->p, k);
+		a->i++;
+	}
+	sercular_lst(&a->p);
+	return (0);
 }

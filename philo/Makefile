@@ -6,7 +6,7 @@
 #    By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/21 14:51:10 by hznagui           #+#    #+#              #
-#    Updated: 2023/02/27 13:12:46 by hznagui          ###   ########.fr        #
+#    Updated: 2023/03/04 16:00:08 by hznagui          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,10 @@ NAME = philo
 
 FLAGS = -Wall -Wextra -Werror
 
-SRC_FILE = 	ft_atoi.c \
+SRC_FILE = 	tolls2.c \
 			main.c \
 			lst.c \
+			tolls1.c \
 
 COLOUR_GREEN=\033[1;32m
 
