@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:49:54 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/03 19:33:04 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/04 10:58:49 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct philo
     int index;
     int i;
     long k;
+    long a1;
     long a2;
     long a3;
     long a4;
@@ -48,6 +49,7 @@ int arg;
 int i;
 struct timeval time;
 pthread_t death;
+pthread_t eating;
 t_philo *p;
 
 } t_data;

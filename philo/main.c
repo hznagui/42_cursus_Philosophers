@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/03 19:47:55 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/04 11:24:13 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,45 @@ long ft_gestion(int a,struct timeval *time1,t_philo *p)
     	printf("%ld ms %d is eating\n", o, p->index);
 	else if (a == 3 && p->i == 1)
     	printf("%ld ms %d is sleeping\n",o, p->index);
-	else if (a == 4 && p->i == 1)
+	else if (a == 4 && p->i == 1 )
     	printf("%ld ms %d is thinking\n",o, p->index);
 	else if (a == 5 && p->i == 0)
     	printf("%ld ms %d is dead\n",o, p->index);
 	return (o);
 }
+void *eating(void *l)
+{
+	t_philo *p = l;
+	long i;
+	int z;
+	i = 0;
+	z = 0;
 
+	while (1)
+	{
+		z = 0;
+		i = 0;
+		while (i < p->a1)
+		{
+			
+			if (p->k < p->a5)
+				z = 1;
+			i++;
+			p = p->next;
+		}
+		if (!z)
+		{
+			i = 0;
+			while (i < p->a1)
+			{
+				p->i = 0;
+				i++;
+				p = p->next;
+			}
+			return (0);
+		}
+	}
+}
 void *death(void *l)
 {
 	struct timeval time1;
@@ -114,19 +146,19 @@ void *death(void *l)
 	{
 		if (a->p->last < ft_gestion(0,&time1,a->p))
 		{
+			// pthread_detach (a->eating);
 			while (i < a->a1)
 			{
+				pthread_detach (a->p->phl);
 				a->p->i = 0;
 				i++;
 				a->p = a->p->next;
 			}
+			
 			ft_gestion(5,&time1,a->p);
+			a->i = -1;
 			return(0);
 		}
-		// else if (a->p->k == a->a5)
-		// {
-		// 	pthread_detach(a->p->phl);
-		// }
 		a->p = a->p->next;
 	}
 }
@@ -183,8 +215,20 @@ int create_threads(t_data *a)
 	}
 	if (pthread_create(&a->death, NULL,death,a))
 			return(1);
-	if (pthread_join(a->death,NULL))
-			return(1);
+	// if (a->arg == 6)
+	// {
+	// 	if (pthread_create(&a->eating, NULL,eating,a->p))
+	// 		return(1);
+	// }
+	while(1)
+	{
+		if (a->i == -1)
+		{
+			return(0);
+		}
+	}
+	// if (pthread_join(a->death,NULL))
+	// 		return(1);
 	return(0);
 }
 int values(char **argv, t_data *a,int argc)
