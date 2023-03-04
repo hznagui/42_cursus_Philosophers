@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/04 11:24:13 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/04 12:36:58 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,67 +99,57 @@ long ft_gestion(int a,struct timeval *time1,t_philo *p)
     	printf("%ld ms %d is sleeping\n",o, p->index);
 	else if (a == 4 && p->i == 1 )
     	printf("%ld ms %d is thinking\n",o, p->index);
-	else if (a == 5 && p->i == 0)
+	else if (a == 5)
     	printf("%ld ms %d is dead\n",o, p->index);
 	return (o);
 }
-void *eating(void *l)
-{
-	t_philo *p = l;
-	long i;
-	int z;
-	i = 0;
-	z = 0;
 
-	while (1)
-	{
-		z = 0;
-		i = 0;
-		while (i < p->a1)
-		{
-			
-			if (p->k < p->a5)
-				z = 1;
-			i++;
-			p = p->next;
-		}
-		if (!z)
-		{
-			i = 0;
-			while (i < p->a1)
-			{
-				p->i = 0;
-				i++;
-				p = p->next;
-			}
-			return (0);
-		}
-	}
-}
 void *death(void *l)
 {
 	struct timeval time1;
 	t_data *a = l;
+	int z;
 	int i;
-	i = 0; 
 	while (1)
 	{
-		if (a->p->last < ft_gestion(0,&time1,a->p))
+	z = 0;
+	i = 0; 
+		while (i < a->a1)
 		{
-			// pthread_detach (a->eating);
+			if (a->p->k < a->p->a5)
+				z = 1;
+			if (a->p->last < ft_gestion(0,&time1,a->p))
+			{
+				i=0;
+				while (i < a->a1)
+					{
+						a->p->i = 0;
+						// pthread_detach (a->p->phl);
+						i++;
+						a->p = a->p->next;
+					}
+				ft_gestion(5,&time1,a->p);
+				// usleep(500);
+				a->i = -1;
+				return(0);
+			}
+			i++;
+		a->p = a->p->next;
+		}
+		if (!z && a->arg == 6)
+		{
+			i = 0;
 			while (i < a->a1)
 			{
-				pthread_detach (a->p->phl);
 				a->p->i = 0;
+				pthread_detach (a->p->phl);
 				i++;
 				a->p = a->p->next;
 			}
-			
-			ft_gestion(5,&time1,a->p);
 			a->i = -1;
-			return(0);
+			return (0);
 		}
-		a->p = a->p->next;
+		
 	}
 }
 void ft_pause(int index,struct timeval *time1,t_philo *p)
@@ -205,6 +195,8 @@ void *start(void *l)
 }
 int create_threads(t_data *a)
 {
+	t_data *k;
+	k = a;
 	a->i = 0;
 	while (a->i < a->a1)
 	{
@@ -217,8 +209,10 @@ int create_threads(t_data *a)
 			return(1);
 	// if (a->arg == 6)
 	// {
-	// 	if (pthread_create(&a->eating, NULL,eating,a->p))
+	// 	printf("salam\n");
+	// 	if (pthread_create(&a->eating, NULL,eating,k))
 	// 		return(1);
+			
 	// }
 	while(1)
 	{
@@ -227,8 +221,6 @@ int create_threads(t_data *a)
 			return(0);
 		}
 	}
-	// if (pthread_join(a->death,NULL))
-	// 		return(1);
 	return(0);
 }
 int values(char **argv, t_data *a,int argc)
@@ -254,7 +246,7 @@ int values(char **argv, t_data *a,int argc)
 			}
 	
 	create_struct(a);
-	gettimeofday(&(a->time),NULL);;
+	gettimeofday(&(a->time),NULL);
 	return (0);
 }
 int	main(int argc, char **argv)
