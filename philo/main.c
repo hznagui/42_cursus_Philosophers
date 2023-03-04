@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/04 14:20:11 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/04 14:58:19 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_nothing(char **argv, int a, int i, int z)
 		k = 0;
 		z = 0;
 		i = 0;
-		while (argv[a][i++])
+		while (argv[a][i])
 		{
 			if ((argv[a][i] >= '0' && argv[a][i] <= '9') && z == 0)
 			{
@@ -57,6 +57,7 @@ int	check_nothing(char **argv, int a, int i, int z)
 			}
 			else if (!(argv[a][i] >= '0' && argv[a][i] <= '9') && z == 1)
 				z = 0;
+			i++;
 		}
 		if (k != 1)
 			return (1);
@@ -104,42 +105,41 @@ void	*death(void *l)
 {
 	struct timeval	time1;
 	t_data			*a;
-	int				z;
-	int				i;
 
 	a = l;
 	while (1)
 	{
-		z = 0;
-		i = 0;
-		while (i < a->a1)
+		a->z = 0;
+		a->h = 0;
+		while (a->h < a->a1)
 		{
 			if (a->p->k < a->p->a5)
-				z = 1;
+				a->z = 1;
 			if (a->p->last < ft_gestion(0, &time1, a->p))
 			{
-				i = 0;
-				while (i < a->a1)
+				a->h = 0;
+				while (a->h < a->a1)
 				{
 					a->p->i = 0;
-					i++;
+					a->h++;
+					pthread_detach(a->p->phl);
 					a->p = a->p->next;
 				}
 				ft_gestion(5, &time1, a->p);
 				a->i = -1;
 				return (0);
 			}
-			i++;
+			a->h++;
 			a->p = a->p->next;
 		}
-		if (!z && a->arg == 6)
+		if (!a->z && a->arg == 6)
 		{
-			i = 0;
-			while (i < a->a1)
+			a->h = 0;
+			while (a->h < a->a1)
 			{
 				a->p->i = 0;
 				pthread_detach(a->p->phl);
-				i++;
+				a->h++;
 				a->p = a->p->next;
 			}
 			a->i = -1;
