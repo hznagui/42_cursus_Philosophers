@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/04 18:07:12 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/05 10:09:27 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	*continu(t_data *a, struct timeval *time1, int index)
 		a->p->i = 0;
 		a->h++;
 		pthread_detach(a->p->phl);
+		pthread_mutex_destroy(&a->p->fork);
 		a->p = a->p->next;
 	}
 	a->i = -1;
