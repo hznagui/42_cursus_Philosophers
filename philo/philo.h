@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:49:54 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/08 13:41:21 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/08 14:29:02 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,10 @@ void				sercular_lst(t_philo **lst);
 void				ft_lstadd_back(t_philo **lst, t_philo *new);
 int					create_struct(t_data *a);
 int					check(char **argv);
-long ft_time2(t_philo *p);
-long ft_time1(t_philo *p);
+long				ft_time2(t_philo *p);
+long				ft_time1(t_philo *p);
 int					check_nothing(char **argv, int a, int i, int z);
 void				ft_gestion(int a, t_philo *p);
 void				ft_pause(int index, t_philo *p);
 int					values(char **argv, t_data *a, int argc);
 #endif
-//protection p->k
-//protection p->last
-//protection a->p->i

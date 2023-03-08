@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:43:43 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/08 11:46:55 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/08 14:29:09 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,5 @@ void	ft_gestion(int a, t_philo *p)
 	else if (a == 4 && p->i == 1)
 		printf("%ld ms %d is thinking\n", ft_time1(p), p->index);
 	pthread_mutex_unlock(&p->m_i);
-	return;
+	return ;
 }
