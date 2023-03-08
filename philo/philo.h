@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:49:54 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/08 11:35:21 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/08 13:41:21 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct philo
 	pthread_mutex_t	fork;
 	pthread_mutex_t	m_last;
 	pthread_mutex_t	m_i;
-	pthread_mutex_t	m_k;
 	int				index;
 	int				i;
 	long			k;
@@ -36,6 +35,7 @@ typedef struct philo
 	long			a4;
 	long			a5;
 	long			last;
+	long			b_last;
 	long			o1;
 	long			o2;
 	int				arg;

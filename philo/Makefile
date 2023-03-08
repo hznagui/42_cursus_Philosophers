@@ -6,13 +6,13 @@
 #    By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/21 14:51:10 by hznagui           #+#    #+#              #
-#    Updated: 2023/03/04 16:00:08 by hznagui          ###   ########.fr        #
+#    Updated: 2023/03/08 14:18:55 by hznagui          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror 
 
 SRC_FILE = 	tolls2.c \
 			main.c \

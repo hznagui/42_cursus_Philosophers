@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:48:16 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/08 11:55:40 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/08 13:42:40 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int continu(t_data *a, int index)
 		a->p->i = 0;
 		pthread_detach(a->p->phl);
 		pthread_mutex_destroy(&a->p->fork);
+		pthread_mutex_destroy(&a->p->m_i);
+		pthread_mutex_destroy(&a->p->m_last);
 		a->h++;
 		a->p = a->p->next;
 	}
@@ -56,13 +58,11 @@ int death(void *l)
 		a->h = 0;
 		while (a->h < a->a1)
 		{
-			pthread_mutex_lock(&a->p->m_k);
 			pthread_mutex_lock(&a->p->m_last);
 			if (a->p->k < a->p->a5)
 				a->z = 1;
 			if (a->p->last < ft_time2(a->p))
 				return (continu(a, 1));
-			pthread_mutex_unlock(&a->p->m_k);
 			pthread_mutex_unlock(&a->p->m_last);
 			a->h++;
 			a->p = a->p->next;
@@ -88,8 +88,8 @@ void	*start(void *l)
 		ft_gestion(2,p);
 		pthread_mutex_lock(&p->m_last);
 		p->last += ft_time1(p);
+		p->k += 1;
 		pthread_mutex_unlock(&p->m_last);
-		p->k += 1;		
 		ft_pause(1, p);
 		pthread_mutex_unlock(&p->fork);
 		pthread_mutex_unlock(&p->next->fork);
