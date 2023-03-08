@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:41:11 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/04 15:47:22 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/08 11:35:51 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ t_philo	*ft_lstnew(int index, t_data *a)
 		p->a5 = a->a5;
 	p->next = NULL;
 	pthread_mutex_init(&p->fork, NULL);
+	pthread_mutex_init(&p->m_last, NULL);
+	pthread_mutex_init(&p->m_i, NULL);
+	pthread_mutex_init(&p->m_k, NULL);
 	p->index = index;
 	return (p);
 }

@@ -6,7 +6,7 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:43:43 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/04 15:51:32 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/08 11:46:55 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,22 +105,17 @@ int	check_nothing(char **argv, int a, int i, int z)
 }
 //------------------------------------------------------------------------//
 
-long	ft_gestion(int a, struct timeval *time1, t_philo *p)
+void	ft_gestion(int a, t_philo *p)
 {
-	long	o;
-
-	gettimeofday(time1, NULL);
-	o = (time1->tv_sec - p->time->tv_sec) * 1000 + (time1->tv_usec
-			- p->time->tv_usec) / 1000;
+	pthread_mutex_lock(&p->m_i);
 	if (a == 1 && p->i == 1)
-		printf("%ld ms %d has taken a fork\n", o, p->index);
+		printf("%ld ms %d has taken a fork\n", ft_time1(p), p->index);
 	else if (a == 2 && p->i == 1)
-		printf("%ld ms %d is eating\n", o, p->index);
+		printf("%ld ms %d is eating\n", ft_time1(p), p->index);
 	else if (a == 3 && p->i == 1)
-		printf("%ld ms %d is sleeping\n", o, p->index);
+		printf("%ld ms %d is sleeping\n", ft_time1(p), p->index);
 	else if (a == 4 && p->i == 1)
-		printf("%ld ms %d is thinking\n", o, p->index);
-	else if (a == 5)
-		printf("%ld ms %d is dead\n", o, p->index);
-	return (o);
+		printf("%ld ms %d is thinking\n", ft_time1(p), p->index);
+	pthread_mutex_unlock(&p->m_i);
+	return;
 }

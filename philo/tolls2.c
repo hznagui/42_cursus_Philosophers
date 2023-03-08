@@ -6,26 +6,26 @@
 /*   By: hznagui <hznagui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 15:55:00 by hznagui           #+#    #+#             */
-/*   Updated: 2023/03/04 15:56:49 by hznagui          ###   ########.fr       */
+/*   Updated: 2023/03/08 11:21:07 by hznagui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_pause(int index, struct timeval *time1, t_philo *p)
+void	ft_pause(int index, t_philo *p)
 {
 	long	k;
 
 	if (index == 1)
 	{
-		k = ft_gestion(0, time1, p) + p->a3;
-		while (ft_gestion(0, time1, p) < k)
+		k = ft_time1(p) + p->a3;
+		while (ft_time1(p) < k)
 			usleep(100);
 	}
 	else if (index == 2)
 	{
-		k = ft_gestion(0, time1, p) + p->a4;
-		while (ft_gestion(0, time1, p) < k)
+		k = ft_time1(p) + p->a4;
+		while (ft_time1(p) < k)
 			usleep(100);
 	}
 }
